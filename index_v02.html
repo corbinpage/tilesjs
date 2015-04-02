@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Transform Transitions</title>
+<style>
+
+body {
+  margin: 0;
+}
+
+rect {
+  stroke: #fff;
+  stroke-width: .1px;
+}
+
+body {
+  position: absolute;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var w = 960,
+    h = 500,
+    z = 40,
+    x = w / z,
+    y = h / z;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", w)
+    .attr("height", h);
+
+svg.selectAll("rect")
+    .data(d3.range(x * y))
+  .enter().append("rect")
+    .attr("x", function (d) { return (d % x) * z; })
+    .attr("y", function (d) { return Math.floor(d / x) * z; })
+    .attr("width", z)
+    .attr("height", z)
+    .style("fill", function(d) { return d3.hsl(d % x / x * 360, 1, Math.floor(d / x) / y); })
+    .on("mouseenter", mouseenter)
+    .on("mouseleave", mouseleave);
+
+function initialTranslate(d) {
+  return "translate(" + (d % x) * z + "," + Math.floor(d / x) * z + ")";
+}
+
+function mouseenter(d) {
+  this.parentNode.appendChild(this);
+
+  d3.select(this)
+      .style("pointer-events", "none")
+    .transition()
+      .duration(750)
+      .attr("x", function (d) { return (d % x) * z/2; })
+      .attr("y", function (d) { return Math.floor(d / x) * z/2; })
+      .attr("transform", "scale(2)")
+}
+
+function mouseleave(d) {
+  this.parentNode.appendChild(this);
+
+  d3.select(this)
+      .style("pointer-events", "none")
+    .transition()
+      .duration(750)
+      .attr("x", function (d) { return (d % x) * z; })
+      .attr("y", function (d) { return Math.floor(d / x) * z; })
+      .attr("transform", "scale(4)")
+}
+
+</script>

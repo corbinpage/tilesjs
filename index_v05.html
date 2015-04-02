@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Transform Transitions</title>
+<style>
+
+body {
+  margin: 0;
+  position: absolute;
+}
+
+svg {
+  z-index: -10;
+}
+
+rect {
+  stroke: #fff;
+  stroke-width: .1px;
+  z-index: 10;
+
+  -webkit-transform-origin: center center;
+  -moz-transform-origin: center center;
+  -o-transform-origin: center center;
+
+    -webkit-transition : all ease-in 1s;    
+    -moz-transition : all ease-in 1s;
+    -o-transition : all ease-in 1s;  
+    -ms-transition : all ease-in 1s;
+    transition : all ease-in 1s;   
+
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="fisheye.js"></script>
+<script src="jquery-1.11.2.min.js"></script>
+<script>
+
+var w = 1200,
+    h = 800,
+    z = 50,
+    b = 5,
+    s = 2,
+    x = w / z,
+    y = h / z;
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", w)
+    .attr("height", h);
+
+svg.selectAll("rect")
+    .data([1])
+  .enter().append("rect")
+    .attr("x", function (d) { return 100; })
+    .attr("y", function (d) { return 100; })
+    .attr("width", z)
+    .attr("height", z)
+    .attr("rx", 2)
+    .attr("ry", 2)
+    // .attr("transform", "translate(25,25)scale(1,1)")
+    // .style("fill", function(d) { return d3.hsl(244, 100, 10, 1); });
+    // .on("click", mouseenter);
+    .on("mouseenter", mouseenter)
+    .on("mouseleave", mouseleave);
+
+// svg.selectAll("rect")
+//     .on("mouseleave", mouseleave);
+
+function mouseenter(d) {
+  this.parentNode.appendChild(this);
+  console.log(d3.event);
+  console.log(this);
+
+  d3.select(this)
+    .transition()
+      .duration(500)
+      .attr("transform", "scale("+s+")translate("+(-1.25*z)+","+(-1.25*z)+")");
+}
+
+function mouseleave(d) {
+  this.parentNode.appendChild(this);
+  console.log(d3.event);
+  console.log(this);
+
+  d3.select(this)
+    .transition()
+      .duration(500)
+      .attr("transform", "");
+}
+
+// $("rect").hover(mouseenter, mouseleave)
+
+</script>

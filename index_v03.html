@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Transform Transitions</title>
+<style>
+
+body {
+  margin: 0;
+}
+
+svg {
+  z-index: -10;
+}
+
+rect {
+  stroke: #fff;
+  stroke-width: .1px;
+  z-index: 10;
+
+  -webkit-transform-origin: center center;
+  -moz-transform-origin: center center;
+  -o-transform-origin: center center;
+
+    -webkit-transition : all ease-in 1s;    
+    -moz-transition : all ease-in 1s;
+    -o-transition : all ease-in 1s;  
+    -ms-transition : all ease-in 1s;
+    transition : all ease-in 1s;   
+
+}
+
+/*rect:hover{
+    -webkit-transform : scale(0.3);
+    -moz-transform : scale(0.3);
+    -o-transform : scale(0.3);
+    -ms-transform : scale(0.3);
+    transform : scale(0.3);
+
+}*/
+
+body {
+  position: absolute;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="fisheye.js"></script>
+<script src="jquery-1.11.2.min.js"></script>
+<script>
+
+var w = 1200,
+    h = 800,
+    z = 50,
+    b = 5,
+    s = 2;
+    x = w / z,
+    y = h / z;
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", w)
+    .attr("height", h);
+
+svg.selectAll("rect")
+    .data([1])
+  .enter().append("rect")
+    .attr("x", function (d) { return 100; })
+    .attr("y", function (d) { return 100; })
+    .attr("width", z)
+    .attr("height", z)
+    .attr("rx", 2)
+    .attr("ry", 2);
+    // .attr("transform", "scale(1)translate(0)");
+    // .style("fill", function(d) { return d3.hsl(244, 100, 10, 1); });
+    // .on("click", mouseenter);
+    // .on("mouse", mouseleave);
+    // .on("mouseleave", mouseleave);
+
+// svg.selectAll("rect")
+//     .on("mouseleave", mouseleave);
+
+function mouseenter(d) {
+  this.parentNode.appendChild(this);
+  console.log(d3.event);
+  console.log(this);
+
+  d3.select(this)
+      .style("pointer-events", "none")
+    .transition()
+      .duration(750)
+      .attr("transform", "scale("+s+")translate("+(-1.25*z)+","+(-1.25*z)+")");
+
+  this.parentNode.appendChild(this);
+}
+
+function mouseleave(d) {
+  // this.parentNode.appendChild(this);
+  //console.log(d3.event);
+  //console.log(this);
+
+  // d3.select(this)
+  //     .style("pointer-events", "none")
+  //   .transition()
+  //     .duration(750)
+  //     .attr("transform", "scale("+(1)+")translate("+(.75*z)+","+(.75*z)+")");
+}
+
+$("rect").hover(mouseenter, mouseleave)
+
+</script>

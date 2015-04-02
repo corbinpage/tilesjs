@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Transform Transitions</title>
+<style>
+
+body {
+  margin: 0;
+}
+
+rect {
+  stroke: #fff;
+  stroke-width: .1px;
+}
+
+body {
+  position: absolute;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="fisheye.js"></script>
+<script>
+
+var w = 960,
+    h = 560,
+    z = 40,
+    b = 5,
+    x = w / z,
+    y = h / z;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", w)
+    .attr("height", h);
+
+svg.selectAll("rect")
+    .data(d3.range(x * y))
+  .enter().append("rect")
+    .attr("x", function (d) { return (d % x) * (z+b); })
+    .attr("y", function (d) { return Math.floor(d / x) * (z+b); })
+    .attr("width", z)
+    .attr("height", z)
+    .attr("rx", 2)
+    .attr("ry", 2)
+    .style("fill", function(d) { return d3.hsl(d % x / x * 360, 1, Math.floor(d / x) / y); })
+    .on("mouseenter", mouseenter);
+    // .on("mouseleave", mouseleave);
+
+    // Center the nodes in the middle.
+    // var ox = 0, oy = 0;
+    // var n = x * y;
+    // svg.selectAll("rect").each(function(d) { ox += d.x, oy += d.y; });
+    // ox = ox / n - w / 2, oy = oy / n - h / 2;
+    // svg.selectAll("rect").each(function(d) { d.x -= ox, d.y -= oy; });
+
+function initialTranslate(d) {
+  return "translate(" + (d % x) * z + "," + Math.floor(d / x) * z + ")";
+}
+
+function mouseenter(d) {
+  //this.parentNode.appendChild(this);
+  var dis = this;
+  console.log(dis.x);
+
+  d3.select(this)
+      .style("pointer-events", "none")
+    .transition()
+      .duration(750)
+      // .attr("x", ((d % x) * z)-(z/2))
+      // .attr("y", (Math.floor(d / x) * z)-(z/2))
+      .attr("transform", "scale(2)translate(.5,.5)")
+}
+
+function mouseleave(d) {
+  //this.parentNode.appendChild(this);
+  var dis = this;
+  console.log(dis.x);
+
+  d3.select(this)
+      .style("pointer-events", "none")
+    .transition()
+      .duration(750)
+      // .attr("x", ((d % x) * z)-(z/2))
+      // .attr("y", (Math.floor(d / x) * z)-(z/2))
+      .attr("transform", "scale(.5)")
+}
+
+// var fisheye = d3.fisheye.circular()
+//       .radius(120);
+
+
+
+
+
+
+//     svg.on("mousemove", function() {
+//       fisheye.focus(d3.mouse(this));
+
+//       svg.selectAll("rect").each(function(d) { d.fisheye = fisheye(d); console.log(d.fisheye); })
+//           // console.log(d)
+//           //.attr("x", function (d) { return (d % x) * z; })
+//           //.attr("y", function (d) { return Math.floor(d / x) * z; })
+//           .attr("x", 5)
+//           .attr("y", 5)
+//           // .attr("x", function(d) { return d.fisheye.x; })/
+//           // .attr("y", function(d) { return d.fisheye.y; })
+//           .attr("width", function(d) { return d.fisheye.z * 4.5; })
+//           .attr("height", function(d) { return d.fisheye.z * 4.5; });
+
+//     });
+
+
+</script>

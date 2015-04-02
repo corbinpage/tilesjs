@@ -1,0 +1,60 @@
+    <!DOCTYPE html>
+    <meta charset="utf-8">
+    <title>Transform Transitions</title>
+    <style>
+
+    body {
+      margin: 0;
+      position: absolute;
+    }
+
+    </style>
+    <body>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="jquery-1.11.2.min.js"></script>
+    <script>
+
+    var w = 1200,
+        h = 800,
+        z = 50,
+        b = 5,
+        s = 2;
+        x = w / z,
+        y = h / z;
+
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+    svg.selectAll("rect")
+        .data([1])
+      .enter().append("rect")
+        .attr("x", function (d) { return 100; })
+        .attr("y", function (d) { return 100; })
+        .attr("width", z)
+        .attr("height", z)
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .on("click", mouseenter);
+        // .on("mouseleave", mouseleave);
+
+    var ze = 1;
+
+    function mouseenter(d) {
+      this.parentNode.appendChild(this);
+
+      console.log(ze);
+      console.log("enter");
+      console.log(this);
+
+      d3.select(this)
+        .transition()
+          .duration(750)
+          .attr("transform", "scale("+s+")translate("+(-1.25*ze)+","+(-1.25*ze)+")");
+
+      ze+=1;
+      // this.parentNode.appendChild(this);
+    }
+
+    </script>
